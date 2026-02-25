@@ -1,0 +1,989 @@
+{
+  "company": "NovaMente Soluções Cognitivas Ltda.",
+  "cnpj": "42.891.034/0001-77",
+  "headquarters": "Florianópolis, SC, Brazil",
+  "total_employees": 52,
+  "generated_at": "2025-01-01",
+  "employees": [
+
+    {
+      "id": "NM-001",
+      "name": "Rafael Souza Monteiro",
+      "role": "Chief Executive Officer",
+      "department": "C-Level",
+      "level": "C-Level",
+      "shift": "Monday–Friday, flexible",
+      "work_model": "hybrid",
+      "location": "Florianópolis, SC",
+      "hire_date": "2019-10-01",
+      "reports_to": "Board of Directors",
+      "functions": [
+        "Define and communicate overall company vision and long-term strategy",
+        "Represent NovaMente externally with investors, partners, and the media",
+        "Chair monthly all-hands meetings and quarterly board meetings",
+        "Oversee cross-functional alignment between all departments",
+        "Lead culture reinforcement and organizational health initiatives",
+        "Approve C-level hires and organizational design changes",
+        "Manage relationships with key strategic clients and ecosystem partners"
+      ]
+    },
+    {
+      "id": "NM-002",
+      "name": "Camila Rodrigues Ferreira",
+      "role": "Chief Technology Officer",
+      "department": "C-Level",
+      "level": "C-Level",
+      "shift": "Monday–Friday, flexible",
+      "work_model": "hybrid",
+      "location": "Florianópolis, SC",
+      "hire_date": "2019-10-01",
+      "reports_to": "NM-001",
+      "functions": [
+        "Set technical vision and architecture direction for MindFlow",
+        "Oversee Engineering and Data & AI departments",
+        "Lead technical due diligence processes with prospects and investors",
+        "Define and enforce engineering standards, security posture, and infrastructure strategy",
+        "Evaluate and approve adoption of new technologies and tooling",
+        "Represent NovaMente at technical conferences and industry working groups",
+        "Mentor senior engineers and cultivate engineering leadership pipeline"
+      ]
+    },
+    {
+      "id": "NM-003",
+      "name": "Marcos Alves Pinheiro",
+      "role": "Chief Operating Officer",
+      "department": "C-Level",
+      "level": "C-Level",
+      "shift": "Monday–Friday, flexible",
+      "work_model": "hybrid",
+      "location": "Florianópolis, SC",
+      "hire_date": "2019-10-01",
+      "reports_to": "NM-001",
+      "functions": [
+        "Oversee Commercial, Marketing, HR & Culture, and Finance & Legal departments",
+        "Own revenue operations, financial management, and people strategy",
+        "Lead organizational design and internal process governance",
+        "Manage legal compliance and risk across all business areas",
+        "Drive operational efficiency and scalability as the company grows",
+        "Chair weekly operational leadership meetings",
+        "Coordinate international expansion planning"
+      ]
+    },
+
+    {
+      "id": "NM-004",
+      "name": "Bruno Henrique Tavares",
+      "role": "Engineering Head",
+      "department": "Engineering",
+      "level": "L5",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "hybrid",
+      "location": "Florianópolis, SC",
+      "hire_date": "2020-03-15",
+      "reports_to": "NM-002",
+      "functions": [
+        "Own Engineering department strategy, headcount plan, and delivery roadmap",
+        "Manage and develop three tech leads across Platform, Product Engineering, and DevOps squads",
+        "Set and enforce engineering standards including code quality, testing, and documentation",
+        "Coordinate sprint planning and cross-squad dependency management",
+        "Report engineering metrics to CTO in weekly leadership syncs",
+        "Lead hiring for all Engineering roles",
+        "Participate in architectural reviews and technology evaluation"
+      ]
+    },
+    {
+      "id": "NM-005",
+      "name": "Thiago Vasconcelos Lima",
+      "role": "Tech Lead — Platform Squad",
+      "department": "Engineering",
+      "level": "L4",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "hybrid",
+      "location": "Florianópolis, SC",
+      "hire_date": "2020-08-01",
+      "reports_to": "NM-004",
+      "functions": [
+        "Lead backend API design and infrastructure architecture for MindFlow",
+        "Conduct architecture reviews and approve backend design decisions",
+        "Mentor junior and mid-level backend engineers on the squad",
+        "Coordinate with DevOps on deployment pipelines and reliability targets",
+        "Own technical documentation for platform services",
+        "Participate in on-call rotation and lead P1 incident response"
+      ]
+    },
+    {
+      "id": "NM-006",
+      "name": "Fernanda Costa Braga",
+      "role": "Senior Software Engineer — Platform",
+      "department": "Engineering",
+      "level": "L3",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "remote",
+      "location": "Porto Alegre, RS",
+      "hire_date": "2021-02-10",
+      "reports_to": "NM-005",
+      "functions": [
+        "Design and implement backend microservices for MindFlow platform",
+        "Conduct code reviews for platform squad engineers",
+        "Own reliability and scalability of core data ingestion pipeline",
+        "Participate in on-call rotation",
+        "Contribute to platform squad sprint planning and retrospectives"
+      ]
+    },
+    {
+      "id": "NM-007",
+      "name": "André Luís Campos",
+      "role": "Software Engineer — Platform",
+      "department": "Engineering",
+      "level": "L2",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "remote",
+      "location": "Recife, PE",
+      "hire_date": "2022-05-16",
+      "reports_to": "NM-005",
+      "functions": [
+        "Implement backend features and bug fixes across platform services",
+        "Write unit and integration tests for assigned components",
+        "Participate in code reviews as reviewer and reviewee",
+        "Document APIs and services as part of delivery definition of done"
+      ]
+    },
+    {
+      "id": "NM-008",
+      "name": "Juliana Pereira Fonseca",
+      "role": "Junior Software Engineer — Platform",
+      "department": "Engineering",
+      "level": "L1",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "hybrid",
+      "location": "Florianópolis, SC",
+      "hire_date": "2024-03-04",
+      "reports_to": "NM-005",
+      "functions": [
+        "Implement well-scoped backend tasks with guidance from senior engineers",
+        "Write unit tests for assigned code",
+        "Participate actively in sprint ceremonies",
+        "Learn platform architecture and company coding standards through pairing sessions"
+      ]
+    },
+    {
+      "id": "NM-009",
+      "name": "Diego Mendes Ribeiro",
+      "role": "Tech Lead — Product Engineering Squad",
+      "department": "Engineering",
+      "level": "L4",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "hybrid",
+      "location": "Florianópolis, SC",
+      "hire_date": "2021-06-01",
+      "reports_to": "NM-004",
+      "functions": [
+        "Lead feature development across HR dashboard, employee experience, and analytics modules",
+        "Coordinate with Product & Design on PRD refinement and technical feasibility",
+        "Conduct technical interviews for product engineering candidates",
+        "Define frontend architecture standards and component library integration strategy",
+        "Own sprint commitment quality and delivery predictability for product squad"
+      ]
+    },
+    {
+      "id": "NM-010",
+      "name": "Priscila Nascimento Carvalho",
+      "role": "Senior Software Engineer — Product",
+      "department": "Engineering",
+      "level": "L3",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "remote",
+      "location": "Belo Horizonte, MG",
+      "hire_date": "2022-01-17",
+      "reports_to": "NM-009",
+      "functions": [
+        "Develop and maintain frontend features using React and TypeScript",
+        "Lead handoff review sessions with designers for new feature implementations",
+        "Review frontend code and mentor junior engineers on the squad",
+        "Contribute to accessibility standards implementation across MindFlow UI"
+      ]
+    },
+    {
+      "id": "NM-011",
+      "name": "Lucas Andrade Silveira",
+      "role": "Software Engineer — Product",
+      "department": "Engineering",
+      "level": "L2",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "remote",
+      "location": "São Paulo, SP",
+      "hire_date": "2023-04-03",
+      "reports_to": "NM-009",
+      "functions": [
+        "Implement frontend features and maintain component library usage consistency",
+        "Write frontend tests and participate in QA for assigned features",
+        "Collaborate with designers on interaction-level implementation questions"
+      ]
+    },
+    {
+      "id": "NM-012",
+      "name": "Beatriz Oliveira Santos",
+      "role": "Junior Software Engineer — Product",
+      "department": "Engineering",
+      "level": "L1",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "hybrid",
+      "location": "Florianópolis, SC",
+      "hire_date": "2024-07-08",
+      "reports_to": "NM-009",
+      "functions": [
+        "Implement scoped UI components and frontend tasks with mentorship",
+        "Participate in sprint ceremonies and code review as a learner",
+        "Build familiarity with MindFlow codebase and engineering practices"
+      ]
+    },
+    {
+      "id": "NM-013",
+      "name": "Rodrigo Martins Cunha",
+      "role": "Tech Lead — Security & DevOps",
+      "department": "Engineering",
+      "level": "L4",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "hybrid",
+      "location": "Florianópolis, SC",
+      "hire_date": "2021-09-13",
+      "reports_to": "NM-004",
+      "functions": [
+        "Own cloud infrastructure, CI/CD pipeline, and deployment automation",
+        "Lead security posture for NovaMente's infrastructure and product environments",
+        "Define and enforce on-call procedures and SLA targets",
+        "Conduct quarterly infrastructure cost reviews and optimization initiatives",
+        "Coordinate compliance tooling for LGPD and client security requirements"
+      ]
+    },
+    {
+      "id": "NM-014",
+      "name": "Amanda Rocha Teixeira",
+      "role": "DevOps Engineer",
+      "department": "Engineering",
+      "level": "L2",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "remote",
+      "location": "Curitiba, PR",
+      "hire_date": "2022-11-07",
+      "reports_to": "NM-013",
+      "functions": [
+        "Maintain and improve CI/CD pipelines and deployment automation",
+        "Monitor infrastructure health and respond to alerts",
+        "Support engineers with environment configuration and tooling issues",
+        "Participate in on-call rotation"
+      ]
+    },
+    {
+      "id": "NM-015",
+      "name": "Felipe Gomes Araújo",
+      "role": "Security Engineer",
+      "department": "Engineering",
+      "level": "L2",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "remote",
+      "location": "São Paulo, SP",
+      "hire_date": "2023-08-21",
+      "reports_to": "NM-013",
+      "functions": [
+        "Conduct regular vulnerability assessments and penetration testing",
+        "Review code changes for security implications",
+        "Maintain security monitoring tooling and alert triage",
+        "Support employees with security incident reporting and investigation",
+        "Contribute to security training materials and awareness communications"
+      ]
+    },
+    {
+      "id": "NM-016",
+      "name": "Natália Ferreira Lima",
+      "role": "Junior DevOps Engineer",
+      "department": "Engineering",
+      "level": "L1",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "hybrid",
+      "location": "Florianópolis, SC",
+      "hire_date": "2024-10-14",
+      "reports_to": "NM-013",
+      "functions": [
+        "Assist in maintaining CI/CD pipelines under senior guidance",
+        "Monitor infrastructure dashboards and escalate anomalies",
+        "Document infrastructure processes and runbooks"
+      ]
+    },
+    {
+      "id": "NM-017",
+      "name": "Isabela Freitas Duarte",
+      "role": "Head of Product",
+      "department": "Product & Design",
+      "level": "L5",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "hybrid",
+      "location": "Florianópolis, SC",
+      "hire_date": "2020-11-02",
+      "reports_to": "NM-002",
+      "functions": [
+        "Own MindFlow product strategy and annual roadmap",
+        "Manage product managers and UX team",
+        "Lead quarterly roadmap reviews with C-level and commercial stakeholders",
+        "Define and track product OKRs and key metrics",
+        "Facilitate product discovery process and prioritization framework",
+        "Represent the product in investor and board conversations",
+        "Drive cross-functional alignment between Product, Engineering, and Commercial"
+      ]
+    },
+    {
+      "id": "NM-018",
+      "name": "Gabriel Torres Nogueira",
+      "role": "Senior Product Manager — HR Dashboard",
+      "department": "Product & Design",
+      "level": "L3",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "hybrid",
+      "location": "Florianópolis, SC",
+      "hire_date": "2021-04-19",
+      "reports_to": "NM-017",
+      "functions": [
+        "Own the HR dashboard product area — strategy, roadmap, and delivery",
+        "Write and maintain PRDs for all features within the HR dashboard scope",
+        "Conduct user interviews and feedback sessions with HR buyer personas",
+        "Prioritize backlog and manage sprint scope for product engineering squad",
+        "Define success metrics and monitor feature performance post-launch"
+      ]
+    },
+    {
+      "id": "NM-019",
+      "name": "Carolina Vieira Magalhães",
+      "role": "Product Manager — Employee Experience",
+      "department": "Product & Design",
+      "level": "L2",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "remote",
+      "location": "Rio de Janeiro, RJ",
+      "hire_date": "2022-08-29",
+      "reports_to": "NM-017",
+      "functions": [
+        "Manage the employee-facing layer of MindFlow, including check-in flows and self-service tools",
+        "Gather and synthesize user feedback from client employee users",
+        "Write PRDs for employee experience features and improvements",
+        "Collaborate with UX research on qualitative data collection and analysis"
+      ]
+    },
+    {
+      "id": "NM-020",
+      "name": "Vinicius Barros Figueiredo",
+      "role": "UX Researcher",
+      "department": "Product & Design",
+      "level": "L3",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "remote",
+      "location": "São Paulo, SP",
+      "hire_date": "2023-01-09",
+      "reports_to": "NM-017",
+      "functions": [
+        "Plan and conduct user interviews, usability tests, and surveys",
+        "Synthesize qualitative research findings into actionable product insights",
+        "Maintain the user research repository and make findings accessible to all product stakeholders",
+        "Facilitate discovery sessions with product managers and designers",
+        "Track user satisfaction and NPS data across MindFlow product areas"
+      ]
+    },
+    {
+      "id": "NM-021",
+      "name": "Marina Coelho Azevedo",
+      "role": "Senior UX/UI Designer",
+      "department": "Product & Design",
+      "level": "L3",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "hybrid",
+      "location": "Florianópolis, SC",
+      "hire_date": "2021-07-26",
+      "reports_to": "NM-017",
+      "functions": [
+        "Design end-to-end user flows and high-fidelity interfaces for MindFlow",
+        "Maintain and evolve the MindFlow component library in Figma",
+        "Conduct design reviews and provide feedback to junior designers",
+        "Lead design handoff sessions with engineering for complex features",
+        "Champion accessibility and inclusive design standards across the product"
+      ]
+    },
+    {
+      "id": "NM-022",
+      "name": "Gustavo Prado Lemos",
+      "role": "UX/UI Designer",
+      "department": "Product & Design",
+      "level": "L2",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "remote",
+      "location": "Florianópolis, SC",
+      "hire_date": "2023-06-12",
+      "reports_to": "NM-021",
+      "functions": [
+        "Design user interface screens and interaction flows for assigned product areas",
+        "Create prototypes for usability testing sessions",
+        "Maintain design assets and documentation in Figma",
+        "Collaborate with product managers during feature discovery"
+      ]
+    },
+    {
+      "id": "NM-023",
+      "name": "Laís Mendonça Cardoso",
+      "role": "Junior UX/UI Designer",
+      "department": "Product & Design",
+      "level": "L1",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "hybrid",
+      "location": "Florianópolis, SC",
+      "hire_date": "2024-05-20",
+      "reports_to": "NM-021",
+      "functions": [
+        "Support senior designers with component creation and screen design",
+        "Maintain Figma file organization and asset naming conventions",
+        "Participate in design critiques and apply feedback under guidance"
+      ]
+    },
+    {
+      "id": "NM-024",
+      "name": "Eduardo Santana Cruz",
+      "role": "Head of Data & AI",
+      "department": "Data & AI",
+      "level": "L5",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "hybrid",
+      "location": "Florianópolis, SC",
+      "hire_date": "2021-03-01",
+      "reports_to": "NM-002",
+      "functions": [
+        "Define data and AI strategy aligned with MindFlow product roadmap",
+        "Manage data engineers, data scientists, and ML engineer",
+        "Own model governance framework including bias audits and performance standards",
+        "Collaborate with Legal on LGPD compliance for all data processing activities",
+        "Represent data capabilities in client and investor conversations",
+        "Lead hiring for all Data & AI roles"
+      ]
+    },
+    {
+      "id": "NM-025",
+      "name": "Aline Batista Moreira",
+      "role": "Senior Data Scientist",
+      "department": "Data & AI",
+      "level": "L3",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "remote",
+      "location": "Brasília, DF",
+      "hire_date": "2021-09-06",
+      "reports_to": "NM-024",
+      "functions": [
+        "Develop and validate predictive models including burnout risk score and team health index",
+        "Conduct bias audits for all models before production deployment",
+        "Write model documentation and maintain model registry entries",
+        "Present model findings to product and commercial stakeholders",
+        "Monitor production model performance and initiate retraining when thresholds are exceeded"
+      ]
+    },
+    {
+      "id": "NM-026",
+      "name": "Renato Cavalcante Pires",
+      "role": "Data Scientist",
+      "department": "Data & AI",
+      "level": "L2",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "remote",
+      "location": "São Paulo, SP",
+      "hire_date": "2022-10-03",
+      "reports_to": "NM-024",
+      "functions": [
+        "Build and evaluate machine learning models for wellbeing analytics features",
+        "Perform exploratory data analysis to support feature engineering decisions",
+        "Collaborate with data engineers to ensure data pipeline quality for model inputs",
+        "Document experiments and outcomes in the model registry"
+      ]
+    },
+    {
+      "id": "NM-027",
+      "name": "Tatiana Ramos Sousa",
+      "role": "ML Engineer",
+      "department": "Data & AI",
+      "level": "L3",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "remote",
+      "location": "Campinas, SP",
+      "hire_date": "2022-04-25",
+      "reports_to": "NM-024",
+      "functions": [
+        "Build and maintain model deployment infrastructure and retraining pipelines",
+        "Monitor production model health and automate alerting for performance drift",
+        "Collaborate with data scientists on operationalizing experimental models",
+        "Maintain ML platform tooling and evaluate new MLOps technologies"
+      ]
+    },
+    {
+      "id": "NM-028",
+      "name": "Henrique Almeida Barros",
+      "role": "Senior Data Engineer",
+      "department": "Data & AI",
+      "level": "L3",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "remote",
+      "location": "Fortaleza, CE",
+      "hire_date": "2021-11-15",
+      "reports_to": "NM-024",
+      "functions": [
+        "Design and maintain data pipelines that collect, transform, and store wellbeing data",
+        "Own the data catalog and ensure all pipelines are documented and monitored",
+        "Lead pipeline code reviews and enforce data engineering standards",
+        "Coordinate with Engineering on data access patterns and API contracts"
+      ]
+    },
+    {
+      "id": "NM-029",
+      "name": "Patrícia Leal Guimarães",
+      "role": "Data Engineer",
+      "department": "Data & AI",
+      "level": "L2",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "remote",
+      "location": "Goiânia, GO",
+      "hire_date": "2023-03-13",
+      "reports_to": "NM-028",
+      "functions": [
+        "Build and maintain data ingestion and transformation pipelines",
+        "Monitor pipeline health and respond to data quality alerts",
+        "Document pipeline logic in the data catalog",
+        "Support data scientists with data access and preparation for model development"
+      ]
+    },
+    {
+      "id": "NM-030",
+      "name": "Sérgio Nascimento Araújo",
+      "role": "Head of Commercial",
+      "department": "Commercial",
+      "level": "L5",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "hybrid",
+      "location": "Florianópolis, SC",
+      "hire_date": "2020-07-01",
+      "reports_to": "NM-003",
+      "functions": [
+        "Own commercial strategy, revenue targets, and pipeline management",
+        "Lead and develop Sales and Customer Success sub-teams",
+        "Negotiate and close strategic enterprise accounts",
+        "Define sales methodology and qualification framework",
+        "Report commercial results and forecast to COO and board",
+        "Lead hiring for all Commercial roles"
+      ]
+    },
+    {
+      "id": "NM-031",
+      "name": "Débora Carvalho Faria",
+      "role": "Sales Manager",
+      "department": "Commercial",
+      "level": "L4",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "remote",
+      "location": "São Paulo, SP",
+      "hire_date": "2021-05-10",
+      "reports_to": "NM-030",
+      "functions": [
+        "Lead outbound and inbound sales team for mid-market and enterprise accounts",
+        "Coach sales representatives on qualification, demo delivery, and negotiation",
+        "Own weekly pipeline review and CRM reporting for Sales sub-team",
+        "Collaborate with Marketing on lead quality feedback and ICP refinement"
+      ]
+    },
+    {
+      "id": "NM-032",
+      "name": "Pedro Henrique Vilas Boas",
+      "role": "Senior Account Executive",
+      "department": "Commercial",
+      "level": "L3",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "remote",
+      "location": "São Paulo, SP",
+      "hire_date": "2022-02-07",
+      "reports_to": "NM-031",
+      "functions": [
+        "Manage full sales cycle for enterprise accounts from prospecting to close",
+        "Conduct discovery calls and product demonstrations for HR buyers and C-level stakeholders",
+        "Negotiate commercial terms and coordinate contract review with Legal",
+        "Maintain accurate CRM records and pipeline forecasts"
+      ]
+    },
+    {
+      "id": "NM-033",
+      "name": "Larissa Monteiro Gomes",
+      "role": "Account Executive",
+      "department": "Commercial",
+      "level": "L2",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "remote",
+      "location": "Belo Horizonte, MG",
+      "hire_date": "2023-07-03",
+      "reports_to": "NM-031",
+      "functions": [
+        "Manage full sales cycle for mid-market accounts",
+        "Conduct outbound prospecting via email, LinkedIn, and cold calling",
+        "Run product demos and handle commercial objections",
+        "Coordinate proposal preparation and contract execution"
+      ]
+    },
+    {
+      "id": "NM-034",
+      "name": "Caio Rezende Ferreira",
+      "role": "Sales Development Representative",
+      "department": "Commercial",
+      "level": "L1",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "remote",
+      "location": "São Paulo, SP",
+      "hire_date": "2024-01-22",
+      "reports_to": "NM-031",
+      "functions": [
+        "Generate qualified leads through outbound prospecting",
+        "Qualify inbound leads and book discovery calls for account executives",
+        "Maintain accurate prospect records in CRM",
+        "Report outreach metrics weekly to Sales Manager"
+      ]
+    },
+    {
+      "id": "NM-035",
+      "name": "Vanessa Pinto Leite",
+      "role": "Customer Success Manager — Lead",
+      "department": "Commercial",
+      "level": "L4",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "hybrid",
+      "location": "Florianópolis, SC",
+      "hire_date": "2021-01-18",
+      "reports_to": "NM-030",
+      "functions": [
+        "Lead Customer Success sub-team and define CS playbooks and processes",
+        "Own retention and expansion revenue targets for the CS portfolio",
+        "Manage strategic accounts directly and conduct quarterly business reviews",
+        "Develop onboarding framework and success milestone definitions",
+        "Represent client voice internally to Product and Engineering"
+      ]
+    },
+    {
+      "id": "NM-036",
+      "name": "Mariana Ribeiro Souza",
+      "role": "Customer Success Manager",
+      "department": "Commercial",
+      "level": "L2",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "remote",
+      "location": "Curitiba, PR",
+      "hire_date": "2023-02-13",
+      "reports_to": "NM-035",
+      "functions": [
+        "Manage a portfolio of mid-market client accounts post-onboarding",
+        "Conduct 30-day, 60-day, and 90-day check-ins with new accounts",
+        "Monitor account health scores and proactively address churn risk",
+        "Drive product adoption and identify expansion opportunities"
+      ]
+    },
+    {
+      "id": "NM-037",
+      "name": "Thales Duarte Barbosa",
+      "role": "Customer Success Analyst",
+      "department": "Commercial",
+      "level": "L1",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "remote",
+      "location": "Salvador, BA",
+      "hire_date": "2024-06-03",
+      "reports_to": "NM-035",
+      "functions": [
+        "Support CS managers with onboarding logistics and client communications",
+        "Maintain account data and health indicators in CRM",
+        "Prepare materials for QBRs and executive business reviews",
+        "Handle tier-1 client support requests and escalate tier-2 issues appropriately"
+      ]
+    },
+    {
+      "id": "NM-038",
+      "name": "Rodrigo Mello Castilho",
+      "role": "Commercial Operations Analyst",
+      "department": "Commercial",
+      "level": "L2",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "remote",
+      "location": "São Paulo, SP",
+      "hire_date": "2022-09-19",
+      "reports_to": "NM-030",
+      "functions": [
+        "Administer and maintain CRM system (data quality, configuration, integrations)",
+        "Produce weekly and monthly commercial dashboards and pipeline reports",
+        "Identify and implement process improvements across Sales and CS workflows",
+        "Support Commercial Head with forecasting and revenue analysis"
+      ]
+    },
+    {
+      "id": "NM-039",
+      "name": "Paula Esteves Meireles",
+      "role": "Head of Marketing",
+      "department": "Marketing",
+      "level": "L5",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "hybrid",
+      "location": "Florianópolis, SC",
+      "hire_date": "2021-08-02",
+      "reports_to": "NM-003",
+      "functions": [
+        "Own marketing strategy, brand positioning, and demand generation targets",
+        "Lead Marketing team across content, demand gen, events, and brand design",
+        "Define and track marketing KPIs and attribution model",
+        "Coordinate with Commercial Head on pipeline contribution and lead quality",
+        "Represent NovaMente in thought leadership forums, media, and industry associations",
+        "Manage marketing budget and agency relationships"
+      ]
+    },
+    {
+      "id": "NM-040",
+      "name": "Fernanda Bittencourt Correia",
+      "role": "Content and Thought Leadership Manager",
+      "department": "Marketing",
+      "level": "L3",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "remote",
+      "location": "Porto Alegre, RS",
+      "hire_date": "2022-03-28",
+      "reports_to": "NM-039",
+      "functions": [
+        "Define and execute editorial calendar for blog, newsletter, and social channels",
+        "Produce and commission long-form content including white papers and research reports",
+        "Manage NovaMente's LinkedIn presence and engagement strategy",
+        "Coordinate with Data & AI team on content based on MindFlow research insights"
+      ]
+    },
+    {
+      "id": "NM-041",
+      "name": "Jonas Albuquerque Neto",
+      "role": "Demand Generation Analyst",
+      "department": "Marketing",
+      "level": "L2",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "remote",
+      "location": "Recife, PE",
+      "hire_date": "2023-05-08",
+      "reports_to": "NM-039",
+      "functions": [
+        "Plan and execute paid media campaigns across LinkedIn, Google, and relevant platforms",
+        "Manage lead generation landing pages and conversion rate optimization",
+        "Report on campaign performance weekly and optimize based on results",
+        "Coordinate with Commercial Operations on lead handoff quality"
+      ]
+    },
+    {
+      "id": "NM-042",
+      "name": "Yasmin Torres Freitas",
+      "role": "Events and Partnerships Coordinator",
+      "department": "Marketing",
+      "level": "L2",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "hybrid",
+      "location": "Florianópolis, SC",
+      "hire_date": "2023-09-04",
+      "reports_to": "NM-039",
+      "functions": [
+        "Plan and coordinate NovaMente's participation in industry conferences and HR events",
+        "Manage webinar calendar and end-to-end execution",
+        "Develop and maintain relationships with partner organizations and event platforms",
+        "Produce post-event reports with lead capture and brand exposure metrics"
+      ]
+    },
+    {
+      "id": "NM-043",
+      "name": "Rafael Lima Paiva",
+      "role": "Brand Designer",
+      "department": "Marketing",
+      "level": "L2",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "remote",
+      "location": "São Paulo, SP",
+      "hire_date": "2022-12-05",
+      "reports_to": "NM-039",
+      "functions": [
+        "Create visual assets for all marketing channels including social, email, and events",
+        "Maintain and evolve NovaMente brand identity guidelines",
+        "Produce presentation templates, sales collateral, and event materials",
+        "Review all externally published visual content for brand consistency"
+      ]
+    },
+    {
+      "id": "NM-044",
+      "name": "Cristiane Andrade Lopes",
+      "role": "Head of HR & Culture",
+      "department": "HR & Culture",
+      "level": "L5",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "hybrid",
+      "location": "Florianópolis, SC",
+      "hire_date": "2021-01-04",
+      "reports_to": "NM-003",
+      "functions": [
+        "Own people strategy, culture programs, and employee experience end-to-end",
+        "Manage HR & Culture team and the in-house psychologist",
+        "Oversee recruitment, onboarding, performance management, and offboarding processes",
+        "Produce DEI report and internal wellbeing health report",
+        "Advise C-level and department heads on people-related decisions",
+        "Manage relationship with benefits providers and external HR vendors",
+        "Lead values audit and annual policy review cycle"
+      ]
+    },
+    {
+      "id": "NM-045",
+      "name": "Bruna Cavalcanti Rocha",
+      "role": "Culture & Wellbeing Specialist",
+      "department": "HR & Culture",
+      "level": "L2",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "hybrid",
+      "location": "Florianópolis, SC",
+      "hire_date": "2022-06-20",
+      "reports_to": "NM-044",
+      "functions": [
+        "Design and facilitate internal culture programs, events, and rituals",
+        "Run the annual values audit survey and synthesis process",
+        "Coordinate the manager development program logistics and facilitation",
+        "Manage monthly knowledge-sharing session calendar and follow-through",
+        "Monitor employee experience data from MindFlow internal deployment",
+        "Support new employee onboarding experience design"
+      ]
+    },
+    {
+      "id": "NM-046",
+      "name": "Dr. Juliana Weg Hoffmann",
+      "role": "Organizational Psychologist",
+      "department": "HR & Culture",
+      "level": "L3",
+      "shift": "Monday–Friday, flexible schedule for sessions",
+      "work_model": "hybrid",
+      "location": "Florianópolis, SC",
+      "hire_date": "2021-06-07",
+      "reports_to": "NM-044",
+      "functions": [
+        "Provide confidential individual psychological support sessions to all employees",
+        "Issue psychological certificates for employees requiring mental health leave",
+        "Advise HR and leadership on team health, burnout risk, and psychological safety matters",
+        "Facilitate content for the manager development program related to mental health",
+        "Contribute to the design of NovaMente's internal wellbeing practices and policies",
+        "Analyze anonymized MindFlow internal deployment data and report findings to HR Head"
+      ]
+    },
+    {
+      "id": "NM-047",
+      "name": "Giovanna Matos Queiroz",
+      "role": "Head of Finance & Legal",
+      "department": "Finance & Legal",
+      "level": "L5",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "hybrid",
+      "location": "Florianópolis, SC",
+      "hire_date": "2020-10-05",
+      "reports_to": "NM-003",
+      "functions": [
+        "Own financial management, reporting, and budget governance for the company",
+        "Oversee legal compliance across employment, commercial, and data privacy domains",
+        "Manage investor reporting and financial due diligence processes",
+        "Serve as Data Protection Officer (DPO) for LGPD compliance purposes",
+        "Lead Finance & Legal team and coordinate with external auditors and legal counsel",
+        "Approve contracts above defined value thresholds"
+      ]
+    },
+    {
+      "id": "NM-048",
+      "name": "Marcelo Siqueira Diniz",
+      "role": "Finance Manager",
+      "department": "Finance & Legal",
+      "level": "L3",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "hybrid",
+      "location": "Florianópolis, SC",
+      "hire_date": "2021-08-16",
+      "reports_to": "NM-047",
+      "functions": [
+        "Produce monthly financial reports and P&L for C-level and board",
+        "Manage annual budget process and quarterly reviews with department heads",
+        "Oversee accounts payable, accounts receivable, and cash flow management",
+        "Coordinate payroll input collection and processing with external payroll provider",
+        "Lead annual financial audit coordination with external auditors"
+      ]
+    },
+    {
+      "id": "NM-049",
+      "name": "Ana Luíza Pires Monteiro",
+      "role": "Legal Analyst",
+      "department": "Finance & Legal",
+      "level": "L3",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "remote",
+      "location": "São Paulo, SP",
+      "hire_date": "2022-07-11",
+      "reports_to": "NM-047",
+      "functions": [
+        "Review and negotiate commercial contracts, NDAs, and data processing agreements",
+        "Maintain LGPD compliance documentation including ROPA and data retention schedules",
+        "Support DPO in responding to data subject rights requests and ANPD interactions",
+        "Advise HR on employment law matters and CLT compliance questions",
+        "Coordinate with external legal counsel for complex or high-value matters"
+      ]
+    },
+    {
+      "id": "NM-050",
+      "name": "Roberto Fonseca Peixoto",
+      "role": "Financial Analyst",
+      "department": "Finance & Legal",
+      "level": "L2",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "hybrid",
+      "location": "Florianópolis, SC",
+      "hire_date": "2023-01-30",
+      "reports_to": "NM-048",
+      "functions": [
+        "Process employee expense reimbursements and validate supporting documentation",
+        "Manage accounts payable workflow and vendor payment schedules",
+        "Assist in payroll input preparation and reconciliation",
+        "Support monthly close process with journal entries and reconciliations",
+        "Respond to employee queries about payslips and reimbursements"
+      ]
+    },
+    {
+      "id": "NM-051",
+      "name": "Clara Esteves Pacheco",
+      "role": "HR Recruitment Analyst",
+      "department": "HR & Culture",
+      "level": "L2",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "hybrid",
+      "location": "Florianópolis, SC",
+      "hire_date": "2023-10-09",
+      "reports_to": "NM-044",
+      "functions": [
+        "Manage end-to-end recruitment process for open roles across all departments",
+        "Screen applications, coordinate interviews, and communicate with candidates",
+        "Maintain applicant tracking system and recruitment metrics reporting",
+        "Conduct reference checks for final candidates",
+        "Coordinate onboarding logistics including equipment provisioning and system access setup"
+      ]
+    },
+    {
+      "id": "NM-052",
+      "name": "Vinícius Almada Barbosa",
+      "role": "Product Manager — Analytics Module",
+      "department": "Product & Design",
+      "level": "L2",
+      "shift": "Monday–Friday, 09:00–18:00 BRT",
+      "work_model": "remote",
+      "location": "Florianópolis, SC",
+      "hire_date": "2024-02-26",
+      "reports_to": "NM-017",
+      "functions": [
+        "Own the analytics and reporting module of MindFlow, including burnout risk dashboards",
+        "Define requirements for data visualization features in collaboration with Data & AI team",
+        "Gather feedback from HR buyer users on analytics and reporting needs",
+        "Write PRDs for analytics features and manage backlog for assigned product area"
+      ]
+    }
+
+  ]
+}
