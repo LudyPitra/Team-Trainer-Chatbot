@@ -8,7 +8,10 @@ import os
 
 load_dotenv()
 
-Settings.llm = Ollama(model="ministral-3:14b")
+Settings.llm = Ollama(
+    model="ministral-3:14b", request_timeout=300.0, context_window=4096
+)
+
 Settings.embed_model = OllamaEmbedding(
     model_name="mxbai-embed-large:latest",
 )
