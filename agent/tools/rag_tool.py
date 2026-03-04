@@ -9,7 +9,7 @@ import os
 load_dotenv()
 
 Settings.llm = Ollama(
-    model="ministral-3:14b", request_timeout=300.0, context_window=4096
+    model="ministral-3:14b", request_timeout=300.0, context_window=8192
 )
 
 Settings.embed_model = OllamaEmbedding(
