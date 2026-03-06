@@ -1,16 +1,17 @@
 import os
 from dotenv import load_dotenv
 from qdrant_client import QdrantClient
+from llama_index.core.readers.base import BaseReader
 from llama_index.core.node_parser import MarkdownNodeParser
 from llama_index.readers.docling import DoclingReader
 from llama_index.embeddings.ollama import OllamaEmbedding
-from llama_index.core import StorageContext, VectorStoreIndex
+from llama_index.core import StorageContext, VectorStoreIndex, SimpleDirectoryReader
 from llama_index.vector_stores.qdrant import QdrantVectorStore
 
 load_dotenv()
 
 SOURCE = "/home/ludy-dev/Documents/02-Projects/LLM-for-company-teams/data/PDFs/"
-EMBED_MODEL = "mxbai-embed-large"
+EMBED_MODEL = "qwen3-embedding:8b"
 SUPPORTED_EXTS = {".pdf", ".docx", ".md", ".csv", ".txt"}
 COLLECTION_NAME = "NovaMente"
 
@@ -41,38 +42,23 @@ def load_documents(directory: str = SOURCE):
     if not os.path.exists(directory):
         raise FileNotFoundError(f"Directory not Found: {directory}")
 
-    valid_files = []
-    unsupported = []
+    print("⏳Reading the directory to inject metadata automaticaly")
 
-    for file_name in os.listdir(directory):
-        file_path = os.path.join(directory, file_name)
+    docling_reader = DoclingReader()
 
-        if os.path.isdir(file_path):
-            continue
+    file_extractor: dict[str, BaseReader] = {
+        ext: docling_reader for ext in SUPPORTED_EXTS
+    }
 
-        ext = os.path.splitext(file_name)[1].lower()
+    reader = SimpleDirectoryReader(
+        input_dir=directory,
+        required_exts=list(SUPPORTED_EXTS),
+        file_extractor=file_extractor,
+        recursive=False,
+    )
 
-        if ext in SUPPORTED_EXTS:
-            valid_files.append((file_name, ext))
-
-        else:
-            unsupported.append((file_name, ext))
-
-    if unsupported:
-        names = ", ".join(f"{n} ({e})" for n, e in unsupported)
-        raise ValueError(f"Unsupported formats found: {names}")
-
-    if not valid_files:
-        raise ValueError(f"No valid files found in: {directory}")
-
-    documents = []
-
-    for file_name, _ in valid_files:
-        file_path = os.path.join(directory, file_name)
-        print(f"📄 Loading: {file_name}")
-        documents.extend(reader.load_data(file_path))
-
-    print(f"✅ {len(documents)} documents loaded.")
+    documents = reader.load_data()
+    print(f"✅{len(documents)} documents loaded.")
     return documents
 
 
