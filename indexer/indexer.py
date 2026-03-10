@@ -15,7 +15,6 @@ EMBED_MODEL = "qwen3-embedding:8b"
 SUPPORTED_EXTS = {".pdf", ".docx", ".md", ".csv", ".txt"}
 COLLECTION_NAME = "NovaMente"
 
-reader = DoclingReader()
 node_parser = MarkdownNodeParser()
 embed_model = OllamaEmbedding(model_name=EMBED_MODEL)
 
