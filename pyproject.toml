@@ -12,8 +12,10 @@ dependencies = [
     "llama-index-embeddings-ollama>=0.8.6",
     "llama-index-llms-ollama>=0.9.1",
     "llama-index-node-parser-docling>=0.4.2",
+    "llama-index-postprocessor-sbert-rerank>=0.4.2",
     "llama-index-readers-docling>=0.4.2",
     "llama-index-readers-file>=0.5.6",
     "llama-index-vector-stores-qdrant>=0.9.1",
     "nest-asyncio>=1.6.0",
+    "sentence-transformers>=5.3.0",
 ]
