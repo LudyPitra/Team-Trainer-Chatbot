@@ -1,121 +1,69 @@
 import os
-import urllib.parse
 from dotenv import load_dotenv
-from datetime import datetime
-from pymongo import MongoClient
 from qdrant_client import QdrantClient
-from llama_index.core.schema import NodeRelationship
-from llama_index.storage.docstore.mongodb import MongoDocumentStore
+from llama_index.core.storage.docstore import SimpleDocumentStore
 from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.core import StorageContext
 from llama_index.vector_stores.qdrant import QdrantVectorStore
 from llama_index.core import SimpleDirectoryReader, VectorStoreIndex, Settings
 from llama_index.core.node_parser import HierarchicalNodeParser, get_leaf_nodes
+from llama_index.core.schema import NodeRelationship
 
 load_dotenv()
 
 MARKDOWN_DIR = "data/Markdown"
-VERSION_FILE = "data/active_index.txt"
-
-timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-
-COLLECTION_NAME = f"NovaMente_{timestamp}"
-MONGO_DB_NAME = "novamente_db"
-MONGO_NAMESPACE = f"docstore_{timestamp}"
+DOCSTORE_FILE = "data/docstore.json"
+COLLECTION_NAME = "NovaMente"
 
 os.makedirs("data", exist_ok=True)
-with open(VERSION_FILE, "w") as f:
-    f.write(timestamp)
 
 try:
     QDRANT_URL = os.environ["QDRANT_URL"]
     QDRANT_API_KEY = os.environ["QDRANT_API_KEY"]
-    RAW_MONGO_URI = os.environ["MONGO_URI"]
     OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
 except KeyError as e:
     raise ValueError(f"❌ Missing required environment variable in .env file: {e}")
 
 
-def get_safe_mongo_uri(uri: str) -> str:
-    """
-    Safely encodes the password in the MongoDB URI if it contains special characters.
-    """
-    if "://" in uri and "@" in uri:
-        prefix, rest = uri.split("://", 1)
-        user_pass, endpoint = rest.rsplit("@", 1)
+def reset_qdrant(qdrant_client: QdrantClient):
+    """Clear the collection in Qdrant to ensure a fresh start with each indexing."""
+    existing_collections = [c.name for c in qdrant_client.get_collections().collections]
 
-        if ":" in user_pass:
-            user, password = user_pass.split(":", 1)
-            safe_user = urllib.parse.quote_plus(user)
-            safe_password = urllib.parse.quote_plus(password)
-            return f"{prefix}://{safe_user}:{safe_password}@{endpoint}"
-
-    return uri
+    if COLLECTION_NAME in existing_collections:
+        print(f"Deleting an old collection in Qdrant: {COLLECTION_NAME}")
+        qdrant_client.delete_collection(collection_name=COLLECTION_NAME)
 
 
-MONGO_URI = get_safe_mongo_uri(RAW_MONGO_URI)
-
-
-def cleanup_old_collections(qdrant_client: QdrantClient):
-    """Delete old collections in Qdrant and MongoDB to save cloud storage space."""
-    existing_qdrant = [c.name for c in qdrant_client.get_collections().collections]
-
-    for coll in existing_qdrant:
-        if coll.startswith("NovaMente_") and timestamp not in coll:
-            print(f"🗑️ A apagar coleção antiga no Qdrant: {coll}")
-            qdrant_client.delete_collection(coll)
-
-    print("⏳ Checking MongoDB Atlas for cleanup.")
-
-    mongo_client = MongoClient(MONGO_URI)
-
-    try:
-        db = mongo_client[MONGO_DB_NAME]
-        existing_mongo = db.list_collection_names()
-
-        for coll in existing_mongo:
-            if "docstore_" in coll and timestamp not in coll:
-                print(f"🗑️ Deleting an old collection in MongoDB: {coll}")
-                db.drop_collection(coll)
-    except Exception as e:
-        print(f"❌ Error cleaning MongoDB: {e}")
-    finally:
-        mongo_client.close()
-
-
-def setup_databases():
-    """Initializes connections, performs reset, and creates the StorageContext."""
+def setup_database():
     print("⏳ Connecting to Qdrant Cloud...")
     qdrant_client = QdrantClient(url=QDRANT_URL, api_key=QDRANT_API_KEY)
 
-    cleanup_old_collections(qdrant_client)
+    reset_qdrant(qdrant_client)
 
     vector_store = QdrantVectorStore(
         client=qdrant_client, collection_name=COLLECTION_NAME
     )
 
-    print("⏳ Connecting Document Store to MongoDB Atlas...")
-    mongo_docstore = MongoDocumentStore.from_uri(
-        uri=MONGO_URI, db_name=MONGO_DB_NAME, namespace=MONGO_NAMESPACE
-    )
+    print("⏳ Creating Local Document Store...")
+
+    docstore = SimpleDocumentStore()
 
     storage_context = StorageContext.from_defaults(
-        docstore=mongo_docstore, vector_store=vector_store
+        docstore=docstore, vector_store=vector_store
     )
 
     return storage_context
 
 
 def build_hierarchical_index(storage_context: StorageContext):
-    """Reads Markdowns, creates hierarchical nodes, and indexes them."""
-    print("⏳ Configuring Embedding Model (OpenAI)...")
+    print("⏳ Building hierarchical index...")
+
     Settings.embed_model = OpenAIEmbedding(
         model="text-embedding-3-small", api_key=OPENAI_API_KEY
     )
 
-    Settings.llm = None
-
     print(f"⏳ Loading Markdown files from '{MARKDOWN_DIR}'...")
+
     documents = SimpleDirectoryReader(
         input_dir=MARKDOWN_DIR, required_exts=[".md"]
     ).load_data()
@@ -128,9 +76,7 @@ def build_hierarchical_index(storage_context: StorageContext):
     print(f"✅ Loaded {len(documents)} documents. Starting Hierarchical Chunking...")
 
     node_parser = HierarchicalNodeParser.from_defaults(chunk_sizes=[2048, 512])
-
     nodes = node_parser.get_nodes_from_documents(documents)
-
     leaf_nodes = get_leaf_nodes(nodes)
 
     leaf_ids = {n.node_id for n in leaf_nodes}
@@ -140,9 +86,7 @@ def build_hierarchical_index(storage_context: StorageContext):
 
     print(f"✅ Generated {len(nodes)} total nodes and {len(leaf_nodes)} leaf nodes.")
 
-    print("⏳ Saving document structure (Parents & Children) to MongoDB...")
-
-    storage_context.docstore.add_documents(nodes)
+    storage_context.docstore.persist(persist_path=DOCSTORE_FILE)
 
     print("⏳ Generating embeddings and saving leaf nodes to Qdrant...")
 
@@ -153,10 +97,11 @@ def build_hierarchical_index(storage_context: StorageContext):
     )
 
     print("🎉 Indexing completed successfully! The system is ready.")
+
     return index
 
 
 if __name__ == "__main__":
     print("🚀 Starting Data Ingestion Pipeline...")
-    storage_context = setup_databases()
+    storage_context = setup_database()
     build_hierarchical_index(storage_context)
