@@ -1,107 +1,112 @@
 import os
+import redis
 from dotenv import load_dotenv
-from qdrant_client import QdrantClient
-from llama_index.core.storage.docstore import SimpleDocumentStore
-from llama_index.embeddings.openai import OpenAIEmbedding
-from llama_index.core import StorageContext
-from llama_index.vector_stores.qdrant import QdrantVectorStore
-from llama_index.core import SimpleDirectoryReader, VectorStoreIndex, Settings
-from llama_index.core.node_parser import HierarchicalNodeParser, get_leaf_nodes
-from llama_index.core.schema import NodeRelationship
 
+# LlamaIndex imports
+from llama_index.core import (
+    SimpleDirectoryReader,
+    StorageContext,
+    VectorStoreIndex,
+    Settings,
+)
+from llama_index.core.node_parser import HierarchicalNodeParser, get_leaf_nodes
+from llama_index.embeddings.openai import OpenAIEmbedding
+
+# Database imports
+from llama_index.vector_stores.qdrant import QdrantVectorStore
+from llama_index.storage.docstore.redis import RedisDocumentStore
+import qdrant_client
+
+# Load environment variables (.env)
 load_dotenv()
 
-MARKDOWN_DIR = "data/Markdown"
-DOCSTORE_FILE = "data/docstore.json"
-COLLECTION_NAME = "NovaMente"
-
-os.makedirs("data", exist_ok=True)
-
-try:
-    QDRANT_URL = os.environ["QDRANT_URL"]
-    QDRANT_API_KEY = os.environ["QDRANT_API_KEY"]
-    OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
-except KeyError as e:
-    raise ValueError(f"❌ Missing required environment variable in .env file: {e}")
+# Configure the global Embedding model
+Settings.embed_model = OpenAIEmbedding(model="text-embedding-3-small")
 
 
-def reset_qdrant(qdrant_client: QdrantClient):
-    """Clear the collection in Qdrant to ensure a fresh start with each indexing."""
-    existing_collections = [c.name for c in qdrant_client.get_collections().collections]
+def main():
+    print("Starting cloud indexing (Qdrant + Redis)...")
 
-    if COLLECTION_NAME in existing_collections:
-        print(f"Deleting an old collection in Qdrant: {COLLECTION_NAME}")
-        qdrant_client.delete_collection(collection_name=COLLECTION_NAME)
+    # Configure Cloud Connections
+    qdrant_url = os.environ["QDRANT_URL"]
+    qdrant_api_key = os.environ["QDRANT_API_KEY"]
 
+    # NOVAS VARIÁVEIS DO REDIS
+    redis_host = os.environ["REDIS_HOST"]
+    redis_port = int(os.environ["REDIS_PORT"])  # Convertendo para inteiro
+    redis_password = os.environ["REDIS_PASSWORD"]
 
-def setup_database():
-    print("⏳ Connecting to Qdrant Cloud...")
-    qdrant_client = QdrantClient(url=QDRANT_URL, api_key=QDRANT_API_KEY)
+    collection_name = "novamente_knowledge_base"
 
-    reset_qdrant(qdrant_client)
+    # --- DATABASE CLEANUP & CONNECTION STEP ---
 
-    vector_store = QdrantVectorStore(
-        client=qdrant_client, collection_name=COLLECTION_NAME
-    )
+    # Qdrant Cleanup
+    print("Checking existing Qdrant collections...")
+    client = qdrant_client.QdrantClient(url=qdrant_url, api_key=qdrant_api_key)
 
-    print("⏳ Creating Local Document Store...")
-
-    docstore = SimpleDocumentStore()
-
-    storage_context = StorageContext.from_defaults(
-        docstore=docstore, vector_store=vector_store
-    )
-
-    return storage_context
-
-
-def build_hierarchical_index(storage_context: StorageContext):
-    print("⏳ Building hierarchical index...")
-
-    Settings.embed_model = OpenAIEmbedding(
-        model="text-embedding-3-small", api_key=OPENAI_API_KEY
-    )
-
-    print(f"⏳ Loading Markdown files from '{MARKDOWN_DIR}'...")
-
-    documents = SimpleDirectoryReader(
-        input_dir=MARKDOWN_DIR, required_exts=[".md"]
-    ).load_data()
-
-    if not documents:
-        raise ValueError(
-            f"❌ No Markdown files found in {MARKDOWN_DIR}. Run converter.py first!"
+    if client.collection_exists(collection_name=collection_name):
+        print(f"Collection '{collection_name}' found. Deleting for a clean index...")
+        client.delete_collection(collection_name=collection_name)
+    else:
+        print(
+            f"Collection '{collection_name}' does not exist. A new one will be created."
         )
 
-    print(f"✅ Loaded {len(documents)} documents. Starting Hierarchical Chunking...")
+    # Redis Connection & Cleanup (Usando o padrão da documentação)
+    print("Connecting to Redis Cloud...")
+    r_client = redis.Redis(
+        host=redis_host,
+        port=redis_port,
+        password=redis_password,
+        username="default",
+        decode_responses=True,  # Facilita a leitura de strings em vez de bytes
+    )
 
-    node_parser = HierarchicalNodeParser.from_defaults(chunk_sizes=[2048, 512])
+    print("Flushing existing Redis data...")
+    r_client.flushdb()
+    print("Redis database flushed successfully.")
+
+    # -----------------------------
+
+    # Initialize Vector Store (Qdrant)
+    vector_store = QdrantVectorStore(client=client, collection_name=collection_name)
+
+    # Initialize Document Store (Redis) passando o client explícito
+    docstore = RedisDocumentStore.from_redis_client(redis_client=r_client)
+
+    # Combine everything in the Storage Context
+    storage_context = StorageContext.from_defaults(
+        vector_store=vector_store, docstore=docstore
+    )
+
+    # Configure Hierarchical Node Parser
+    node_parser = HierarchicalNodeParser.from_defaults(
+        chunk_sizes=[2048, 512], chunk_overlap=50
+    )
+
+    # Load the Markdown documents
+    print("Reading Markdown documents...")
+    documents = SimpleDirectoryReader("./data/Markdown").load_data()
+
+    # Process Nodes
+    print("Generating node hierarchy...")
     nodes = node_parser.get_nodes_from_documents(documents)
     leaf_nodes = get_leaf_nodes(nodes)
 
-    leaf_ids = {n.node_id for n in leaf_nodes}
-    for node in nodes:
-        if node.node_id not in leaf_ids:
-            node.relationships.pop(NodeRelationship.PARENT, None)
+    print(f"Total generated nodes (Parents + Children): {len(nodes)}")
+    print(f"Total leaf nodes (Children): {len(leaf_nodes)}")
 
-    print(f"✅ Generated {len(nodes)} total nodes and {len(leaf_nodes)} leaf nodes.")
+    # Save to Redis and Qdrant
+    print("Sending full text to Redis Cloud...")
+    storage_context.docstore.add_documents(nodes)
 
-    storage_context.docstore.persist(persist_path=DOCSTORE_FILE)
-
-    print("⏳ Generating embeddings and saving leaf nodes to Qdrant...")
-
+    print("Vectorizing and sending leaf nodes to Qdrant Cloud...")
     index = VectorStoreIndex(
-        nodes=leaf_nodes,
-        storage_context=storage_context,
-        show_progress=True,
+        leaf_nodes, storage_context=storage_context, show_progress=True
     )
 
-    print("🎉 Indexing completed successfully! The system is ready.")
-
-    return index
+    print("Indexing completed successfully! Data is now in the cloud.")
 
 
 if __name__ == "__main__":
-    print("🚀 Starting Data Ingestion Pipeline...")
-    storage_context = setup_database()
-    build_hierarchical_index(storage_context)
+    main()
