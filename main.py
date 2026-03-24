@@ -1,33 +1,46 @@
-import chainlit as cl
-from agent.agent import agent
+import sys
+from pathlib import Path
+
+sys.path.append(str(Path(__file__).resolve().parent))
+
+from agent.bot import create_agent
 from llama_index.core.workflow import Context
-from llama_index.core.agent.workflow import AgentStream
+
+from fastapi import FastAPI, HTTPException
+from pydantic import BaseModel
+import uvicorn
+
+app = FastAPI(
+    title="Agent API",
+    description="API for interacting with the agent",
+    version="1.0.0",
+)
+
+print("Loading agent and connecting to database...")
+
+agent = create_agent()
 
 
-@cl.on_chat_start
-async def start_session():
-    ctx = Context(agent)
-    cl.user_session.set("ctx", ctx)
-
-    await cl.Message(
-        content="👋 Hi! I'm the AI ​​Assistant at NovaMente. I can help with questions about company policies, benefits, structure, and culture. What would you like to know?",
-        author="NovaMente Assistant",
-    ).send()
+class ChatRequest(BaseModel):
+    message: str
 
 
-@cl.on_message
-async def answer_message(message: cl.Message):
-    ctx = cl.user_session.get("ctx")
-    msg = cl.Message(content="")
-    await msg.send()
+class ChatResponse(BaseModel):
+    reply: str
 
+
+@app.post("/api/chat", response_model=ChatResponse)
+async def chat_endpoint(request: ChatRequest):
     try:
-        handler = agent.run(message.content, ctx=ctx)
-        async for event in handler.stream_events():
-            if isinstance(event, AgentStream):
-                await msg.stream_token(event.delta)
-        await msg.update()
+        ctx = Context(agent)
 
+        response = await agent.run(request.message, ctx=ctx)
+
+        return ChatResponse(reply=str(response))
     except Exception as e:
-        msg.content = f"⚠️A technical error occurred: {str(e)}"
-        await msg.update()
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+if __name__ == "__main__":
+    print("Starting API server on http://localhost:8000")
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
