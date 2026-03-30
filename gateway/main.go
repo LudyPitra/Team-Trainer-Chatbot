@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"time"
 
 	"github.com/google/uuid"
 )
@@ -23,51 +24,101 @@ type PythonResponse struct {
 	Reply string `json:"reply"`
 }
 
+// Handler da Rota de Chat
 func handleChat(w http.ResponseWriter, r *http.Request) {
+	// 1. Apenas requisições POST
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
 
+	// 2. Decodificação do JSON do Front-end
 	var chatReq ChatRequest
-	err := json.NewDecoder(r.Body).Decode(&chatReq)
-	if err != nil {
-		http.Error(w, "Error reading JSON", http.StatusBadRequest)
+	if err := json.NewDecoder(r.Body).Decode(&chatReq); err != nil {
+		http.Error(w, "Error to read JSON", http.StatusBadRequest)
 		return
 	}
 
-	sessionID := uuid.New()
+	// 3. Gerenciamento de Sessão Seguro (Cookies HTTP-Only)
+	cookieName := "novamente_session"
+	var sessionID uuid.UUID
 
+	cookie, err := r.Cookie(cookieName)
+	if err != nil {
+		fmt.Println("New session detected. Genereting ID...")
+		sessionID = uuid.New()
+
+		http.SetCookie(w, &http.Cookie{
+			Name:     cookieName,
+			Value:    sessionID.String(),
+			Path:     "/",
+			HttpOnly: true, // Protection against XSS
+			MaxAge:   3600, // Expire in 1 hour
+		})
+	} else {
+		parsedID, parseErr := uuid.Parse(cookie.Value)
+		if parseErr != nil {
+			http.Error(w, "Invalid Session", http.StatusUnauthorized)
+			return
+		}
+		sessionID = parsedID
+		fmt.Printf("Existing session recognized: %s\n", sessionID)
+	}
+
+	// 4. Preparando a mensagem para o Motor de IA
 	pythonReq := PythonRequest{
 		SessionID: sessionID,
 		Message:   chatReq.Message,
 	}
-
 	jsonData, _ := json.Marshal(pythonReq)
 
-	resp, err := http.Post("http://localhost:8000/api/chat", "application/json", bytes.NewBuffer(jsonData))
-	if err != nil {
-		http.Error(w, "Error to conect with AI brain", http.StatusInternalServerError)
-		return
+	// 5. Cliente HTTP com Timeout (Proteção contra travamento do Event Loop)
+	client := &http.Client{
+		Timeout: 30 * time.Second,
 	}
 
+	reqToPython, err := http.NewRequest(http.MethodPost, "http://localhost:8000/api/chat", bytes.NewBuffer(jsonData))
+	if err != nil {
+		http.Error(w, "Internal error while assembling the request.", http.StatusInternalServerError)
+		return
+	}
+	reqToPython.Header.Set("Content-Type", "application/json")
+
+	// 6. Fazendo a chamada ao Python
+	resp, err := client.Do(reqToPython)
+	if err != nil {
+		fmt.Printf("Error in the python AI engine: %v\n", err)
+		http.Error(w, "Error to connect to AI engine", http.StatusInternalServerError)
+		return
+	}
 	defer func() {
 		_ = resp.Body.Close()
 	}()
 
+	// 7. Lendo a resposta e devolvendo ao cliente
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Printf("Failed to send response to client: %v\n", err)
+		http.Error(w, "Error to read AI response", http.StatusInternalServerError)
+		return
 	}
+
 	w.Header().Set("Content-Type", "application/json")
 	_, err = w.Write(body)
 	if err != nil {
-		fmt.Printf("Failed to send response to client: %v\n", err)
+		fmt.Printf("Failed to send response to the front end: %v\n", err)
 	}
 }
 
+// Inicialização do Servidor Maestro
 func main() {
-	http.HandleFunc("/chat", handleChat)
+	fmt.Println("🐹 Maestro starting at gate 8080...")
+
+	http.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) {
+		_, _ = fmt.Fprintf(w, "The Maestro is alive and listening to requests!")
+		fmt.Printf("I received a visit on route %s\n", r.URL.Path)
+	})
+
+	http.HandleFunc("/api/chat", handleChat)
 
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
