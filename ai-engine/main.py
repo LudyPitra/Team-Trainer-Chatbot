@@ -1,21 +1,34 @@
 import sys
 from pathlib import Path
-from typing import Dict, Any
-from uuid import UUID
 
 sys.path.append(str(Path(__file__).resolve().parent))
 
+from typing import Dict, Any
+from contextlib import asynccontextmanager
+from uuid import UUID
+from agent.tools.rag_tool import get_rag_query_engine
 from agent.bot import create_agent
 from llama_index.core.workflow import Context
-
 from fastapi import FastAPI, HTTPException, Response, status
 from pydantic import BaseModel
 import uvicorn
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    print("API server is starting up...")
+    app.state.query_engine = get_rag_query_engine()
+    print("RAG Query Engine initialized and ready.")
+    yield
+
+    print("API server is shutting down...")
+
 
 app = FastAPI(
     title="Agent API",
     description="API for interacting with the agent",
     version="1.0.0",
+    lifespan=lifespan,
 )
 
 active_sessions: Dict[UUID, Any] = {}
@@ -36,7 +49,7 @@ async def chat_endpoint(request: ChatRequest):
         if request.session_id not in active_sessions:
             print(f"Creating new session for ID: {request.session_id}")
 
-            new_agent = create_agent()
+            new_agent = create_agent(app.state.query_engine)
             new_ctx = Context(new_agent)
 
             active_sessions[request.session_id] = {"agent": new_agent, "ctx": new_ctx}
@@ -59,7 +72,7 @@ async def delete_session(session_id: UUID):
 
     deleted_session = active_sessions.pop(session_id, None)
 
-    if delete_session:
+    if deleted_session:
         print(f"Cleanup: Session {session_id} has been removed from RAM.")
     else:
         print(f"Cleanup: Session {session_id} not found, nothing to delete.")

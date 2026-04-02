@@ -25,6 +25,8 @@ def get_rag_query_engine():
 
     print("Connecting to cloud databases...")
 
+    debug = os.getenv("DEBUG", "False").lower() == "true"
+
     qdrant_url = os.environ["QDRANT_URL"]
     qdrant_api_key = os.environ["QDRANT_API_KEY"]
     redis_host = os.environ["REDIS_HOST"]
@@ -58,7 +60,7 @@ def get_rag_query_engine():
     retriever = AutoMergingRetriever(
         vector_retriever=base_retriever,
         storage_context=storage_context,
-        verbose=True,  # Imprime no terminal quando o merge acontece!
+        verbose=debug,  # Imprime no terminal quando o merge acontece!
     )
 
     reranker = LLMRerank(choice_batch_size=5, top_n=3, llm=OpenAI(model="gpt-4o-mini"))

@@ -2,6 +2,6 @@
 # https://github.com/akitaonrails/ai-jail
 # Edit freely. Regenerate with: ai-jail --clean --init
 
-command = ["opencode"]
+command = ["claude"]
 rw_maps = []
 ro_maps = []

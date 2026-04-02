@@ -18,10 +18,8 @@ Settings.llm = OpenAI(model="gpt-4o-mini", temperature=0.3)
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-def create_agent():
+def create_agent(query_engine):
     print("Initializing Agent and Tools...")
-
-    query_engine = get_rag_query_engine()
 
     rag_tool = QueryEngineTool(
         query_engine=query_engine,
@@ -53,10 +51,7 @@ def create_agent():
     return agent
 
 
-async def main():
-    agent = create_agent()
-    ctx = Context(agent)
-
+async def main(agent, ctx):
     print("\n" + "-" * 60)
     print("Agent is ready! Type your questions below.")
     print("(Type 'exit' to stop the test)\n")
@@ -83,4 +78,7 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    engine = get_rag_query_engine()
+    agent = create_agent(engine)
+    ctx = Context(agent)
+    asyncio.run(main(agent, ctx))

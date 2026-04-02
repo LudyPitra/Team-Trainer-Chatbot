@@ -3,23 +3,17 @@ name = "llm-for-company-teams"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.12, <3.14"
 dependencies = [
-    "chainlit>=2.10.0",
-    "docling>=2.74.0",
-    "fastapi>=0.135.1",
-    "llama-index>=0.14.15",
-    "llama-index-core>=0.14.15",
-    "llama-index-embeddings-ollama>=0.8.6",
-    "llama-index-llms-ollama>=0.9.1",
-    "llama-index-node-parser-docling>=0.4.2",
-    "llama-index-postprocessor-sbert-rerank>=0.4.2",
-    "llama-index-readers-docling>=0.4.2",
-    "llama-index-readers-file>=0.5.6",
-    "llama-index-vector-stores-qdrant>=0.9.1",
-    "nest-asyncio>=1.6.0",
-    "pydantic>=2.12.5",
-    "redis>=7.3.0",
-    "sentence-transformers>=5.3.0",
-    "uvicorn>=0.41.0",
+  "docling>=2.74.0",
+  "fastapi>=0.135.1",
+  "llama-index>=0.14.15",
+  "llama-index-core>=0.14.15",
+  "llama-index-node-parser-docling>=0.4.2",
+  "llama-index-readers-docling>=0.4.2",
+  "llama-index-readers-file>=0.5.6",
+  "llama-index-storage-docstore-redis>=0.5.0",
+  "llama-index-vector-stores-qdrant>=0.9.1",
+  "pydantic>=2.12.5",
+  "uvicorn>=0.41.0",
 ]
