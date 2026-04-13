@@ -1,9 +1,11 @@
 import sys
+import os
+import json
 from pathlib import Path
 
 sys.path.append(str(Path(__file__).resolve().parent))
 
-from typing import Dict, Any
+import redis
 from contextlib import asynccontextmanager
 from uuid import UUID
 from agent.tools.rag_tool import get_rag_query_engine
@@ -19,8 +21,22 @@ async def lifespan(app: FastAPI):
     print("API server is starting up...")
     app.state.query_engine = get_rag_query_engine()
     print("RAG Query Engine initialized and ready.")
+
+    app.state.agent = create_agent(app.state.query_engine)
+    print("Agent initialized and ready to handle requests.")
+
+    print("Connecting to Redis...")
+    app.state.redis = redis.Redis(
+        host=os.environ["REDIS_HOST"],
+        port=int(os.environ["REDIS_PORT"]),
+        password=os.environ["REDIS_PASSWORD"],
+        username="default",
+        decode_responses=True,
+    )
     yield
 
+    print("Closing Redis connection...")
+    app.state.redis.close()
     print("API server is shutting down...")
 
 
@@ -30,8 +46,6 @@ app = FastAPI(
     version="1.0.0",
     lifespan=lifespan,
 )
-
-active_sessions: Dict[UUID, Any] = {}
 
 
 class ChatRequest(BaseModel):
@@ -46,19 +60,18 @@ class ChatResponse(BaseModel):
 @app.post("/api/chat", response_model=ChatResponse)
 async def chat_endpoint(request: ChatRequest):
     try:
-        if request.session_id not in active_sessions:
-            print(f"Creating new session for ID: {request.session_id}")
+        key = f"session:{request.session_id}"
 
-            new_agent = create_agent(app.state.query_engine)
-            new_ctx = Context(new_agent)
+        data = app.state.redis.get(key)
 
-            active_sessions[request.session_id] = {"agent": new_agent, "ctx": new_ctx}
+        if data:
+            ctx = Context.from_dict(app.state.agent, json.loads(data))
+        else:
+            ctx = Context(app.state.agent)
 
-        session_data = active_sessions[request.session_id]
-        agent = session_data["agent"]
-        ctx = session_data["ctx"]
+        response = await app.state.agent.run(request.message, ctx=ctx)
 
-        response = await agent.run(request.message, ctx=ctx)
+        app.state.redis.set(key, json.dumps(ctx.to_dict()), ex=3600)
 
         return ChatResponse(reply=str(response))
 
@@ -70,12 +83,13 @@ async def chat_endpoint(request: ChatRequest):
 async def delete_session(session_id: UUID):
     """Remove the session from RAM to free up resources."""
 
-    deleted_session = active_sessions.pop(session_id, None)
+    key = f"session:{session_id}"
+    deleted = app.state.redis.delete(key)
 
-    if deleted_session:
-        print(f"Cleanup: Session {session_id} has been removed from RAM.")
+    if deleted:
+        print(f"Session {session_id} deleted from Redis.")
     else:
-        print(f"Cleanup: Session {session_id} not found, nothing to delete.")
+        print(f"Session {session_id} not found in Redis.")
 
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
