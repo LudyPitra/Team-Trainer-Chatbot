@@ -10,6 +10,8 @@ from contextlib import asynccontextmanager
 from uuid import UUID
 from agent.tools.rag_tool import get_rag_query_engine
 from agent.bot import create_agent
+from fastapi.responses import StreamingResponse
+from llama_index.core.agent.workflow import AgentStream
 from llama_index.core.workflow import Context
 from fastapi import FastAPI, HTTPException, Response, status
 from pydantic import BaseModel
@@ -57,7 +59,7 @@ class ChatResponse(BaseModel):
     reply: str
 
 
-@app.post("/api/chat", response_model=ChatResponse)
+@app.post("/api/chat")
 async def chat_endpoint(request: ChatRequest):
     try:
         key = f"session:{request.session_id}"
@@ -69,12 +71,17 @@ async def chat_endpoint(request: ChatRequest):
         else:
             ctx = Context(app.state.agent)
 
-        response = await app.state.agent.run(request.message, ctx=ctx)
+        handler = app.state.agent.run(request.message, ctx=ctx)
 
-        app.state.redis.set(key, json.dumps(ctx.to_dict()), ex=3600)
+        async def stream():
+            async for response in handler.stream_events():
+                if isinstance(response, AgentStream):
+                    yield f"data: {response.delta}\n\n"
 
-        return ChatResponse(reply=str(response))
+            await handler
+            app.state.redis.set(key, json.dumps(ctx.to_dict()), ex=3600)
 
+        return StreamingResponse(stream(), media_type="text/event-stream")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
