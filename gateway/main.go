@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"time"
 
 	"github.com/google/uuid"
 )
@@ -74,7 +73,7 @@ func handleChat(w http.ResponseWriter, r *http.Request) {
 
 	// 5. Cliente HTTP com Timeout (Proteção contra travamento do Event Loop)
 	client := &http.Client{
-		Timeout: 30 * time.Second,
+		Timeout: 0,
 	}
 
 	reqToPython, err := http.NewRequest(http.MethodPost, "http://localhost:8000/api/chat", bytes.NewBuffer(jsonData))
@@ -95,17 +94,35 @@ func handleChat(w http.ResponseWriter, r *http.Request) {
 		_ = resp.Body.Close()
 	}()
 
-	// 7. Lendo a resposta e devolvendo ao cliente
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		http.Error(w, "Error to read AI response", http.StatusInternalServerError)
+	w.Header().Set("Content-Type", "text/event-stream")
+	w.Header().Set("Cache-Control", "no-cache")
+	w.Header().Set("Connection", "keep-alive")
+
+	flusher, ok := w.(http.Flusher)
+	if !ok {
+		http.Error(w, "Streaming not supported", http.StatusInternalServerError)
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	_, err = w.Write(body)
-	if err != nil {
-		fmt.Printf("Failed to send response to the front end: %v\n", err)
+	buf := make([]byte, 1024)
+
+	for {
+		n, err := resp.Body.Read(buf)
+		if n > 0 {
+			_, writeErr := w.Write(buf[:n])
+			if writeErr != nil {
+				fmt.Printf("Error writing to client: %v\n", writeErr)
+				break
+			}
+			flusher.Flush()
+		}
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			fmt.Printf("Error reading stream: %v\n", err)
+			break
+		}
 	}
 }
 
