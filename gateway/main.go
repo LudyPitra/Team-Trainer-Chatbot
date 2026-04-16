@@ -6,8 +6,10 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"os"
 
 	"github.com/google/uuid"
+	"github.com/joho/godotenv"
 )
 
 type ChatRequest struct {
@@ -82,6 +84,7 @@ func handleChat(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	reqToPython.Header.Set("Content-Type", "application/json")
+	reqToPython.Header.Set("X-Internal-Key", os.Getenv("INTERNAL_API_KEY"))
 
 	// 6. Fazendo a chamada ao Python
 	resp, err := client.Do(reqToPython)
@@ -128,6 +131,10 @@ func handleChat(w http.ResponseWriter, r *http.Request) {
 
 // Inicialização do Servidor Maestro
 func main() {
+	if err := godotenv.Load(); err != nil {
+		fmt.Println("Warning: .env file not found, using system environment variables")
+	}
+
 	fmt.Println("🐹 Maestro starting at gate 8080...")
 
 	http.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) {

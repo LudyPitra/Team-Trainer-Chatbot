@@ -13,7 +13,7 @@ from agent.bot import create_agent
 from fastapi.responses import StreamingResponse
 from llama_index.core.agent.workflow import AgentStream
 from llama_index.core.workflow import Context
-from fastapi import FastAPI, HTTPException, Response, status
+from fastapi import FastAPI, HTTPException, Response, status, Request
 from pydantic import BaseModel
 import uvicorn
 
@@ -48,6 +48,14 @@ app = FastAPI(
     version="1.0.0",
     lifespan=lifespan,
 )
+
+
+@app.middleware("http")
+async def verify_api_key(request: Request, call_next):
+    api_key = os.environ.get("INTERNAL_API_KEY")
+    if request.headers.get("X-Internal-Key") != api_key:
+        return Response("Unauthorized", status_code=401)
+    return await call_next(request)
 
 
 class ChatRequest(BaseModel):
