@@ -25,6 +25,25 @@ type PythonResponse struct {
 	Reply string `json:"reply"`
 }
 
+func checkPythonHealth() {
+	resp, err := http.Get("http://localhost:8000/health")
+	if err != nil {
+		fmt.Println("Warning: Python AI engine is not responding.")
+		return
+	}
+
+	defer func() {
+		_ = resp.Body.Close()
+	}()
+
+	if resp.StatusCode != http.StatusOK {
+		fmt.Printf("Warning: Python AI engine returned status %d\n", resp.StatusCode)
+		return
+	}
+
+	fmt.Println("Python AI engine is healthy and ready.")
+}
+
 // Handler da Rota de Chat
 func handleChat(w http.ResponseWriter, r *http.Request) {
 	// 1. Apenas requisições POST
@@ -134,6 +153,8 @@ func main() {
 	if err := godotenv.Load(); err != nil {
 		fmt.Println("Warning: .env file not found, using system environment variables")
 	}
+
+	checkPythonHealth()
 
 	fmt.Println("🐹 Maestro starting at gate 8080...")
 

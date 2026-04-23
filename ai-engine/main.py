@@ -52,10 +52,19 @@ app = FastAPI(
 
 @app.middleware("http")
 async def verify_api_key(request: Request, call_next):
+    if request.url.path == "/health":
+        return await call_next(request)
+
     api_key = os.environ.get("INTERNAL_API_KEY")
     if request.headers.get("X-Internal-Key") != api_key:
         return Response("Unauthorized", status_code=401)
+
     return await call_next(request)
+
+
+@app.get("/health")
+async def health_check():
+    return {"status": "ok"}
 
 
 class ChatRequest(BaseModel):
